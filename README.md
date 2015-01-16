@@ -1,26 +1,6 @@
-## Dependencies
+## Tup (Optional)
 
-### Ubuntu 14.04
-
-    sudo apt-get install git valac libgupnp-1.0-dev libgee-0.8-dev libjson-glib-dev
-
-    # tup build tool
-    # see: http://gittup.org/tup/
-    sudo apt-add-repository 'deb http://ppa.launchpad.net/anatol/tup/ubuntu precise main'
-    sudo apt-get update
-    sudo apt-get install tup
-
-### Fedora 20
-
-    sudo yum install fuse-devel gupnp-devel libgee-devel vala
-
-    # setup Tup
-    git clone git://github.com/gittup/tup.git
-    cd tup
-    ./bootstrap.sh
-
-    sudo ln -s $PWD/tup /usr/local/bin/tup
-    cd ..
+`build.sh` builds its own copy of Tup if it can't find it. If you want to be more efficient, install Tup using your distro's package manager, or build it yourself and add the `tup` binary to your `PATH`.
 
 ## Get Source
 
@@ -34,8 +14,11 @@ If you previously downloaded without `--recursive`, you can checkout the submodu
 
 ## Build
 
-    tup init
-    tup upd
+    ./build.sh
+
+This will also install or build dependencies as needed.
+
+### Auto-rebuilding (Optional)
 
 While developing, it can be useful to leave `tup` running in the background, autocompiling every time anything changes:
 
