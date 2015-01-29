@@ -1,6 +1,22 @@
-include_rules
+.gitignore
 
-LIBRUI_DISCOVERER_DIR = $(TUP_CWD)/../deps/librui-discoverer/src
-VALA_FLAGS += --vapidir=$(LIBRUI_DISCOVERER_DIR) --includedir=$(LIBRUI_DISCOVERER_DIR) -X -I$(LIBRUI_DISCOVERER_DIR) -X $(LIBRUI_DISCOVERER_DIR)/librui-discoverer.o --pkg=rui-discoverer-1.0
+LIBRUI_DISCOVERER_DIR = $(TUP_CWD)/../deps/librui-discoverer
 
-: *.vala | $(LIBRUI_DISCOVERER_DIR)/*.vapi $(LIBRUI_DISCOVERER_DIR)/*.h $(LIBRUI_DISCOVERER_DIR)/*.o |> !vala |> server
+VALA_FLAGS += --vapidir=$(TUP_CWD)/vapi \
+    --pkg=gupnp-1.0 \
+    --pkg=gee-0.8 \
+    --pkg=json-glib-1.0 \
+    --pkg=gio-2.0 \
+    --pkg=posix \
+    --vapidir=$(LIBRUI_DISCOVERER_DIR)/src \
+    --pkg=rui-discoverer-1.0 \
+    -X -w -g
+
+: *.vala \
+    | $(LIBRUI_DISCOVERER_DIR)/src/*.vapi \
+      $(LIBRUI_DISCOVERER_DIR)/src/*.h \
+      $(LIBRUI_DISCOVERER_DIR)/src/*.o \
+      $(LIBRUI_DISCOVERER_DIR)/pkgconfig/*.pc \
+    |> PKG_CONFIG_PATH=$(LIBRUI_DISCOVERER_DIR)/pkgconfig \
+       valac %f $(VALA_FLAGS) -o %o \
+    |> server
